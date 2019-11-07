@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DisplaySettingCCDSave
 {
-    class DisplaySetting
+    class DisplaySetting 
     {
     }
 }
