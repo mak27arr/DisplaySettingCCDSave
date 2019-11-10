@@ -151,6 +151,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -167,6 +168,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\iconfinder_gtk-apply_48086.png" />
+    <None Include="Resources\iconfinder_ic_save_48px_352084.png" />
     <Content Include="WindowsDisplayAPI\Icon.png" />
     <Content Include="WindowsDisplayAPI\readme.txt" />
     <Content Include="WindowsDisplayAPI\WindowsDisplayAPI.csproj" />

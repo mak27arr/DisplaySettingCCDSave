@@ -87,7 +87,10 @@ namespace DisplaySettingCCDSave.Classes
                 }
 
             }
-            catch (Exception ex) { }
+            catch (Exception ex) 
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
         }
 
     }

@@ -2,19 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WindowsDisplayAPI;
 
 namespace DisplaySettingCCDSave.Classes
 {
-    class SafekeepingManager
+    internal class SafekeepingManager
     {
+        private static object syncObj = new object();
         private string file_name = "displayseting.json";
 
-        private List<Tuple<string, List<DisplaySetting>>> settings;
-        public List<Tuple<string, List<DisplaySetting>>> Settings { 
+        private List<Tuple<string, List<Display>>> settings;
+        public List<Tuple<string, List<Display>>> Settings { 
             get {return settings; } 
             set { 
                 if (value != null)
@@ -23,7 +21,7 @@ namespace DisplaySettingCCDSave.Classes
         }
         public SafekeepingManager()
         {
-            settings = new List<Tuple<string, List<DisplaySetting>>>();
+            settings = new List<Tuple<string, List<Display>>>();
             this.Load();
         }
         ~SafekeepingManager()
@@ -35,9 +33,12 @@ namespace DisplaySettingCCDSave.Classes
             try
             {
                 var jsonsettingsList = JObject.FromObject(settings);
-                using (StreamWriter sw = new StreamWriter(this.getFileLocation(), false, System.Text.Encoding.UTF8))
+                lock (syncObj)
                 {
-                    sw.WriteLine(jsonsettingsList);
+                    using (StreamWriter sw = new StreamWriter(this.getFileLocation(), false, System.Text.Encoding.UTF8))
+                    {
+                        sw.WriteLine(jsonsettingsList);
+                    }
                 }
                 return true;
             }catch(Exception ex)
@@ -52,20 +53,22 @@ namespace DisplaySettingCCDSave.Classes
             try
             {
                 string jsonsettingsList;
-                using (StreamReader sw = new StreamReader(this.getFileLocation(), System.Text.Encoding.UTF8))
+                lock (syncObj)
                 {
-                    jsonsettingsList = sw.ReadToEnd();
+                    using (StreamReader sw = new StreamReader(this.getFileLocation(), System.Text.Encoding.UTF8))
+                    {
+                        jsonsettingsList = sw.ReadToEnd();
+                    }
                 }
-                settings = JObject.Parse(jsonsettingsList).ToObject<List<Tuple<string, List<DisplaySetting>>>>();
+                settings = JObject.Parse(jsonsettingsList).ToObject<List<Tuple<string, List<Display>>>>();
                 return true;
             }
             catch (Exception ex)
             {
-                Logging.Log("Error save display setting", ex);
+                Logging.Log("Error load display setting", ex);
                 return false;
             }
         }
-
         public string getFileLocation()
         {
             try

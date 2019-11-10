@@ -2,42 +2,73 @@
 using System.Collections.Generic;
 using System.Linq;
 using WindowsDisplayAPI;
-using Newtonsoft.Json.Linq;
 using DisplaySettingCCDSave.Interfaces;
 
-namespace DisplaySettingCCDSave
+namespace DisplaySettingCCDSave.Classes
 {
     class DisplaySettingManager : IDisplaySettingManager
     {
+
+        public delegate void MessageHandler(string message);
+        public event MessageHandler Notify;
+
+        SafekeepingManager sm; 
+        public DisplaySettingManager()
+        {
+            sm = new SafekeepingManager();
+        }
         public List<Display> GetCureentSettings()
         {
             return Display.GetDisplays().ToList();
         }
-
         public List<Tuple<string, List<Display>>> GetSavedSettingList()
         {
-            throw new NotImplementedException();
+            sm.Load();
+            return sm.Settings;
         }
 
         public List<Display> GetSevedSetting(string name)
         {
-            throw new NotImplementedException();
+            sm.Load();
+            return sm.Settings.Where(s => s.Item1 == name).First().Item2;
         }
 
         public bool LoadSetting(string name)
         {
-            throw new NotImplementedException();
-        }
+            sm.Load();
+            List<Display> settings = sm.Settings.Where(s => s.Item1 == name).First().Item2;
 
-        public bool SaveCurentSetting()
-        {
-            //JObject.Parse(new Object());
-            return false;
+
+
+
+            Notify?.Invoke("Settings loaded");
+            return true;
         }
 
         public bool SeveCurrentSettings(string name)
         {
-            throw new NotImplementedException();
+            if (name.Length == 0)
+            {
+                Notify?.Invoke("Error: Set name for save");
+                return false;
+            }
+            if (sm.Settings.Where(s => s.Item1 == name).Count() > 0)
+            {
+                Notify?.Invoke("Error: Name busy");
+                return false;
+            }
+            var currentsettings = GetCureentSettings();
+            //sm.Settings = sm.Settings.Add(new Tuple<string, List<Display>>(name, currentsettings));
+            if (sm.Save())
+            {
+                Notify?.Invoke("Settings saved");
+                return true;
+            }
+            else
+            {
+                Notify?.Invoke("Error save settings");
+                return false;
+            }
         }
     }
 }
