@@ -7,40 +7,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DisplaySettingCCDSave.Classes;
 
 namespace DisplaySettingCCDSave
 {
     public partial class Form1 : Form
     {
+        DisplaySettingManager dsm;
         public Form1()
-        {
+        { 
             InitializeComponent();
+            dsm = new DisplaySettingManager();
+            dsm.Notify += MessageNotification;
+            InitData();
+        }
+        private void MessageNotification(string msg)
+        {
+            toolStripStatusLabel.Text = msg;
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void loadSelectedSettingsButton_Click(object sender, EventArgs e)
         {
-
+            if (savedSettingList.SelectedIndex != null && savedSettingList.SelectedIndex != -1)
+                throw new NotImplementedException();
+                dsm.LoadSetting("");
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void InitData()
         {
-           // DisplaySettingManager ds = new DisplaySettingManager();
-            //ds.GetMonitorList();
+            var saved_setting = dsm.GetSavedSettingList()?.ConvertAll(s => s.Item1);
+            savedSettingList.DataSource = saved_setting;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void saveCurentSettingsButton_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void LoadSelectedSettings_Click(object sender, EventArgs e)
-        {
-
+            if (settingsNameTextBox.Text.Length > 0)
+                dsm.SeveCurrentSettings(settingsNameTextBox.Text);
+            else
+                MessageNotification("Please enter a name");
         }
     }
 }

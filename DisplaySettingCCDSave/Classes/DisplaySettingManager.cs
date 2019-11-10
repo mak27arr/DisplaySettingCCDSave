@@ -6,7 +6,7 @@ using DisplaySettingCCDSave.Interfaces;
 
 namespace DisplaySettingCCDSave.Classes
 {
-    class DisplaySettingManager : IDisplaySettingManager
+    public class DisplaySettingManager : IDisplaySettingManager
     {
 
         public delegate void MessageHandler(string message);
