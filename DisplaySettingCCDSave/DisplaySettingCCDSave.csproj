@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,9 +52,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\DeviceContextApi.cs" />
-    <Compile Include="DisplaySetting.cs" />
-    <Compile Include="DisplaySettingManager.cs" />
+    <Compile Include="Classes\DisplaySetting.cs" />
+    <Compile Include="Classes\DisplaySettingManager.cs" />
+    <Compile Include="Classes\Logging.cs" />
+    <Compile Include="Classes\SaveManager.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,8 +63,83 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="IDsplaySetting.cs" />
+    <Compile Include="Interfaces\IDisplaySettingManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WindowsDisplayAPI\ColorDepth.cs" />
+    <Compile Include="WindowsDisplayAPI\Device.cs" />
+    <Compile Include="WindowsDisplayAPI\Display.cs" />
+    <Compile Include="WindowsDisplayAPI\DisplayAdapter.cs" />
+    <Compile Include="WindowsDisplayAPI\DisplayConfig\PathDisplayAdapter.cs" />
+    <Compile Include="WindowsDisplayAPI\DisplayConfig\PathDisplaySource.cs" />
+    <Compile Include="WindowsDisplayAPI\DisplayConfig\PathDisplayTarget.cs" />
+    <Compile Include="WindowsDisplayAPI\DisplayConfig\PathInfo.cs" />
+    <Compile Include="WindowsDisplayAPI\DisplayConfig\PathTargetDesktopImage.cs" />
+    <Compile Include="WindowsDisplayAPI\DisplayConfig\PathTargetInfo.cs" />
+    <Compile Include="WindowsDisplayAPI\DisplayConfig\PathTargetSignalInfo.cs" />
+    <Compile Include="WindowsDisplayAPI\DisplayDevice.cs" />
+    <Compile Include="WindowsDisplayAPI\DisplayPossibleSetting.cs" />
+    <Compile Include="WindowsDisplayAPI\DisplaySetting.cs" />
+    <Compile Include="WindowsDisplayAPI\Exceptions\DuplicateModeException.cs" />
+    <Compile Include="WindowsDisplayAPI\Exceptions\InvalidDisplayException.cs" />
+    <Compile Include="WindowsDisplayAPI\Exceptions\InvalidEDIDInformation.cs" />
+    <Compile Include="WindowsDisplayAPI\Exceptions\InvalidRegistryAddressException.cs" />
+    <Compile Include="WindowsDisplayAPI\Exceptions\MissingDisplayException.cs" />
+    <Compile Include="WindowsDisplayAPI\Exceptions\MissingModeException.cs" />
+    <Compile Include="WindowsDisplayAPI\Exceptions\ModeChangeException.cs" />
+    <Compile Include="WindowsDisplayAPI\Exceptions\NotACloneMemberException.cs" />
+    <Compile Include="WindowsDisplayAPI\Exceptions\PathChangeException.cs" />
+    <Compile Include="WindowsDisplayAPI\Exceptions\TargetNotAvailableException.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DeviceContextApi.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DeviceContext\ChangeDisplaySettingsExResults.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DeviceContext\ChangeDisplaySettingsFlags.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DeviceContext\DeviceModeFields.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DeviceContext\DisplayDeviceStateFlags.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DeviceContext\DisplayFixedOutput.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DeviceContext\DisplayFlags.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DeviceContext\DisplayOrientation.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DeviceContext\DisplaySettingsMode.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DeviceContext\Structures\DeviceMode.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DeviceContext\Structures\DisplayDevice.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfigApi.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\DisplayConfigDeviceInfoType.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\DisplayConfigModeInfoType.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\DisplayConfigPathInfoFlags.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\DisplayConfigPathSourceInfoFlags.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\DisplayConfigPathTargetInfoFlags.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\DisplayConfigPixelFormat.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\DisplayConfigRotation.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\DisplayConfigScaling.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\DisplayConfigScanLineOrdering.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\DisplayConfigTargetDeviceNameFlags.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\DisplayConfigTopologyId.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\DisplayConfigVideoOutputTechnology.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\QueryDeviceConfigFlags.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\SetDisplayConfigFlags.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfig2DRegion.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigAdapterName.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigDesktopImageInfo.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigDeviceInfoHeader.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigModeInfo.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigPathInfo.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigPathSourceInfo.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigPathTargetInfo.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigRational.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigSetTargetPersistence.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigSourceDeviceName.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigSourceMode.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigSupportVirtualResolution.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigTargetBaseType.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigTargetDeviceName.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigTargetMode.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigTargetPreferredMode.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\Structures\DisplayConfigVideoSignalInfo.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\DisplayConfig\VideoSignalStandard.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\Structures\LUID.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\Structures\PointL.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\Structures\RectangleL.cs" />
+    <Compile Include="WindowsDisplayAPI\Native\Win32Status.cs" />
+    <Compile Include="WindowsDisplayAPI\UnAttachedDisplay.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -86,6 +165,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="WindowsDisplayAPI\Icon.png" />
+    <Content Include="WindowsDisplayAPI\readme.txt" />
+    <Content Include="WindowsDisplayAPI\WindowsDisplayAPI.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

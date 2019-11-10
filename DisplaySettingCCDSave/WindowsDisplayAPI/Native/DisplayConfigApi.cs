@@ -1,40 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using WindowsDisplayAPI.Native.DisplayConfig;
+using WindowsDisplayAPI.Native.DisplayConfig.Structures;
 
-namespace DisplaySettingCCDSave.Classes
+namespace WindowsDisplayAPI.Native
 {
-    class DeviceContextApi
+    internal class DisplayConfigApi
     {
-        [DllImport("user32")]
-        public static extern ChangeDisplaySettingsExResults ChangeDisplaySettingsEx(
-            string deviceName,
-            ref DeviceMode devMode,
-            IntPtr handler,
-            ChangeDisplaySettingsFlags flags,
-            IntPtr param);
-
-        [DllImport("user32")]
-        public static extern ChangeDisplaySettingsExResults ChangeDisplaySettingsEx(
-            string deviceName,
-            IntPtr devModePointer,
-            IntPtr handler,
-            ChangeDisplaySettingsFlags flags,
-            IntPtr param);
-
-        [DllImport("user32")]
-        public static extern bool EnumDisplaySettings(
-            string deviceName,
-            DisplaySettingsMode mode,
-            ref DeviceMode devMode);
-
-        [DllImport("user32", CharSet = CharSet.Ansi)]
-        internal static extern bool EnumDisplayDevices(string deviceName, uint deviceNumber,
-            ref DeviceContext.Structures.DisplayDevice displayDevice,
-            uint flags);
         [DllImport("user32")]
         public static extern Win32Status DisplayConfigGetDeviceInfo(
             ref DisplayConfigSupportVirtualResolution targetSupportVirtualResolution);
@@ -81,20 +53,4 @@ namespace DisplaySettingCCDSave.Classes
             [In] DisplayConfigPathInfo[] pathInfoArray, [In] uint modeInfoArrayElements,
             [In] DisplayConfigModeInfo[] modeInfoArray, [In] SetDisplayConfigFlags flags);
     }
-
-    internal enum Win32Status
-    {
-        Success = 0x0,
-        ErrorInsufficientBuffer = 0x7A
-    }
-
-    [Flags]
-    internal enum DisplayConfigPathInfoFlags : uint
-    {
-        None = 0,
-        Active = 1,
-        SupportVirtualMode = 8
-    }
-
-    //https://github.com/falahati/WindowsDisplayAPI/blob/master/WindowsDisplayAPI/DisplayDevice.cs
 }
