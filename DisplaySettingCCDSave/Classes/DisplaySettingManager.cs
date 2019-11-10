@@ -57,6 +57,7 @@ namespace DisplaySettingCCDSave.Classes
                 Notify?.Invoke("Error: Name busy");
                 return false;
             }
+            sm.Load();
             var saved_setting = sm.Settings;
             saved_setting.Add(new Tuple<string, List<Display>>(name, GetCureentSettings()));
             sm.Settings = saved_setting;
