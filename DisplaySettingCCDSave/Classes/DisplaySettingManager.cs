@@ -35,6 +35,11 @@ namespace DisplaySettingCCDSave.Classes
 
         public bool LoadSetting(string name)
         {
+            if(name==null || name.Length <= 0)
+            {
+                Notify?.Invoke("Please select a name");
+                return false;
+            }
             sm.Load();
             List<Display> settings = sm.Settings.Where(s => s.Item1 == name).First().Item2;
 

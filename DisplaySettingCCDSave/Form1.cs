@@ -29,13 +29,12 @@ namespace DisplaySettingCCDSave
         private void loadSelectedSettingsButton_Click(object sender, EventArgs e)
         {
             if (savedSettingList.SelectedIndex != null && savedSettingList.SelectedIndex != -1)
-                throw new NotImplementedException();
-                dsm.LoadSetting("");
+                dsm.LoadSetting(savedSettingList.SelectedItem?.ToString());
         }
 
         private void InitData()
         {
-            var saved_setting = dsm.GetSavedSettingList()?.ConvertAll(s => s.Item1);
+            var saved_setting = dsm.GetSavedSettingList();
             savedSettingList.DataSource = saved_setting;
         }
 

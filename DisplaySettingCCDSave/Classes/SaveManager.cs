@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,7 +33,7 @@ namespace DisplaySettingCCDSave.Classes
         {
             try
             {
-                var jsonsettingsList = JObject.FromObject(settings);
+                var jsonsettingsList = JsonConvert.SerializeObject(settings);
                 lock (syncObj)
                 {
                     using (StreamWriter sw = new StreamWriter(this.getFileLocation(), false, System.Text.Encoding.UTF8))
@@ -60,12 +61,13 @@ namespace DisplaySettingCCDSave.Classes
                         jsonsettingsList = sw.ReadToEnd();
                     }
                 }
-                settings = JObject.Parse(jsonsettingsList).ToObject<List<Tuple<string, List<Display>>>>();
+                settings = JsonConvert.DeserializeObject<List<Tuple<string, List<Display>>>>(jsonsettingsList);
                 return true;
             }
             catch (Exception ex)
             {
                 Logging.Log("Error load display setting", ex);
+                settings = new List<Tuple<string, List<Display>>>();
                 return false;
             }
         }
