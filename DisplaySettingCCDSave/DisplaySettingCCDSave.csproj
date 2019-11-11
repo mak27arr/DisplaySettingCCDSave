@@ -55,7 +55,8 @@
     <Compile Include="Classes\DisplaySetting.cs" />
     <Compile Include="Classes\DisplaySettingManager.cs" />
     <Compile Include="Classes\Logging.cs" />
-    <Compile Include="Classes\SaveManager.cs" />
+    <Compile Include="Classes\SafekeepingManager.cs" />
+    <Compile Include="Classes\Serialization.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

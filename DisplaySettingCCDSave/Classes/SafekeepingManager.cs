@@ -33,7 +33,7 @@ namespace DisplaySettingCCDSave.Classes
         {
             try
             {
-                var jsonsettingsList = JsonConvert.SerializeObject(settings);
+                var jsonsettingsList = Serialization.ObjectToString(settings);//JsonConvert.SerializeObject(settings);
                 lock (syncObj)
                 {
                     using (StreamWriter sw = new StreamWriter(this.getFileLocation(), false, System.Text.Encoding.UTF8))
@@ -61,7 +61,7 @@ namespace DisplaySettingCCDSave.Classes
                         jsonsettingsList = sw.ReadToEnd();
                     }
                 }
-                settings = JsonConvert.DeserializeObject<List<Tuple<string, List<Display>>>>(jsonsettingsList);
+                settings = Serialization.StringToObject(jsonsettingsList) as List<Tuple<string, List<Display>>>;//JsonConvert.DeserializeObject<List<Tuple<string, List<Display>>>>(jsonsettingsList);
                 return true;
             }
             catch (Exception ex)

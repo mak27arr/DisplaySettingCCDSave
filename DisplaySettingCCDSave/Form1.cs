@@ -34,14 +34,16 @@ namespace DisplaySettingCCDSave
 
         private void InitData()
         {
-            var saved_setting = dsm.GetSavedSettingList();
-            savedSettingList.DataSource = saved_setting;
+            savedSettingList.DataSource = dsm.GetSavedSettingList().ConvertAll<string>(n => n.Item1);
         }
         //http://blog.halan.se/post/Deserializing-objects-with-non-default-constructors-in-JSONNET.aspx
         private void saveCurentSettingsButton_Click(object sender, EventArgs e)
         {
             if (settingsNameTextBox.Text.Length > 0)
+            {
                 dsm.SeveCurrentSettings(settingsNameTextBox.Text);
+                InitData();
+            }
             else
                 MessageNotification("Please enter a name");
         }
