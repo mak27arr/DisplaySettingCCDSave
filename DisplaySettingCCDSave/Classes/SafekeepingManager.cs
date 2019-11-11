@@ -61,7 +61,7 @@ namespace DisplaySettingCCDSave.Classes
                         jsonsettingsList = sw.ReadToEnd();
                     }
                 }
-                settings = Serialization.StringToObject(jsonsettingsList) as List<Tuple<string, List<Display>>>;//JsonConvert.DeserializeObject<List<Tuple<string, List<Display>>>>(jsonsettingsList);
+                settings = Serialization.StringToObject(jsonsettingsList, settings.GetType()) as List<Tuple<string, List<Display>>>;//JsonConvert.DeserializeObject<List<Tuple<string, List<Display>>>>(jsonsettingsList);
                 return true;
             }
             catch (Exception ex)

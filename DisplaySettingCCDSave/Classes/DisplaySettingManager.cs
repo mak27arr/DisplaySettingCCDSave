@@ -42,10 +42,22 @@ namespace DisplaySettingCCDSave.Classes
             }
             sm.Load();
             List<Display> settings = sm.Settings.Where(s => s.Item1 == name).First().Item2;
+            //Numbers of screens attached +
+            //layout of screens
+            //mode of the screens (mirrored or extended)
+            //refresh rates +
+            //color depths +
+            //resolutions + 
+            //rotation 
+            //scaling +
+            Dictionary<WindowsDisplayAPI.DisplayDevice, WindowsDisplayAPI.DisplaySetting> new_value = new Dictionary<WindowsDisplayAPI.DisplayDevice, WindowsDisplayAPI.DisplaySetting>();
+            foreach (Display dis in settings)
+            {
+                new_value.Add(dis,dis.SavedSetting);
+            }
 
-
-
-
+            WindowsDisplayAPI.DisplaySetting.SaveDisplaySettings(new_value,true);
+            WindowsDisplayAPI.DisplaySetting.ApplySavedSettings();
             Notify?.Invoke("Settings loaded");
             return true;
         }
