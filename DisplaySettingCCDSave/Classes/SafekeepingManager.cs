@@ -12,8 +12,8 @@ namespace DisplaySettingCCDSave.Classes
         private static object syncObj = new object();
         private string file_name = "displayseting.json";
 
-        private List<Tuple<string, List<Display>>> settings;
-        public List<Tuple<string, List<Display>>> Settings { 
+        private List<Tuple<string, List<Tuple<Display,DisplaySetting>>>> settings;
+        public List<Tuple<string, List<Tuple<Display, DisplaySetting>>>> Settings { 
             get {return settings; } 
             set { 
                 if (value != null)
@@ -22,7 +22,7 @@ namespace DisplaySettingCCDSave.Classes
         }
         public SafekeepingManager()
         {
-            settings = new List<Tuple<string, List<Display>>>();
+            settings = new List<Tuple<string, List<Tuple<Display, DisplaySetting>>>>();
             this.Load();
         }
         ~SafekeepingManager()
@@ -61,13 +61,13 @@ namespace DisplaySettingCCDSave.Classes
                         jsonsettingsList = sw.ReadToEnd();
                     }
                 }
-                settings = Serialization.StringToObject(jsonsettingsList, settings.GetType()) as List<Tuple<string, List<Display>>>;//JsonConvert.DeserializeObject<List<Tuple<string, List<Display>>>>(jsonsettingsList);
+                settings = Serialization.StringToObject(jsonsettingsList, settings.GetType()) as List<Tuple<string, List<Tuple<Display, DisplaySetting>>>>;//JsonConvert.DeserializeObject<List<Tuple<string, List<Display>>>>(jsonsettingsList);
                 return true;
             }
             catch (Exception ex)
             {
                 Logging.Log("Error load display setting", ex);
-                settings = new List<Tuple<string, List<Display>>>();
+                settings = new List<Tuple<string, List<Tuple<Display, DisplaySetting>>>>();
                 return false;
             }
         }

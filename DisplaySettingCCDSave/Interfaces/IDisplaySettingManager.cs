@@ -9,11 +9,11 @@ namespace DisplaySettingCCDSave.Interfaces
 {
     interface IDisplaySettingManager
     {
-        List<Display> GetCureentSettings();
+        List<Tuple<Display, WindowsDisplayAPI.DisplaySetting>> GetCureentSettings();
         bool SeveCurrentSettings(string name);
         bool LoadSetting(string name);
-        List<Tuple<string, List<Display>>> GetSavedSettingList();
-        List<Display> GetSevedSetting(string name);
+        List<Tuple<string, List<Tuple<Display, DisplaySetting>>>> GetSavedSettingList();
+        List<Tuple<Display, DisplaySetting>> GetSevedSetting(string name);
 
     }
 }

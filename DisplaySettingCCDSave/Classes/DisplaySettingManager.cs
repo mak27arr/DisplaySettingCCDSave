@@ -17,17 +17,17 @@ namespace DisplaySettingCCDSave.Classes
         {
             sm = new SafekeepingManager();
         }
-        public List<Display> GetCureentSettings()
+        public List<Tuple<Display, WindowsDisplayAPI.DisplaySetting>> GetCureentSettings()
         {
-            return Display.GetDisplays().ToList();
+            return Display.GetDisplays().Select(d=> { return new Tuple<Display, WindowsDisplayAPI.DisplaySetting>(d, d.SavedSetting); }).ToList();
         }
-        public List<Tuple<string, List<Display>>> GetSavedSettingList()
+        public List<Tuple<string, List<Tuple<Display, WindowsDisplayAPI.DisplaySetting>>>> GetSavedSettingList()
         {
             sm.Load();
             return sm.Settings;
         }
 
-        public List<Display> GetSevedSetting(string name)
+        public List<Tuple<Display, WindowsDisplayAPI.DisplaySetting>> GetSevedSetting(string name)
         {
             sm.Load();
             return sm.Settings.Where(s => s.Item1 == name).First().Item2;
@@ -41,7 +41,7 @@ namespace DisplaySettingCCDSave.Classes
                 return false;
             }
             sm.Load();
-            List<Display> settings = sm.Settings.Where(s => s.Item1 == name).First().Item2;
+            List<Tuple<Display, DisplaySetting>> settings = sm.Settings.Where(s => s.Item1 == name).First().Item2;
             //Numbers of screens attached +
             //layout of screens
             //mode of the screens (mirrored or extended)
@@ -51,9 +51,9 @@ namespace DisplaySettingCCDSave.Classes
             //rotation 
             //scaling +
             Dictionary<WindowsDisplayAPI.DisplayDevice, WindowsDisplayAPI.DisplaySetting> new_value = new Dictionary<WindowsDisplayAPI.DisplayDevice, WindowsDisplayAPI.DisplaySetting>();
-            foreach (Display dis in settings)
+            foreach (var dis in settings)
             {
-                new_value.Add(dis,dis.SavedSetting);
+                new_value.Add(dis.Item1,dis.Item2);
             }
 
             WindowsDisplayAPI.DisplaySetting.SaveDisplaySettings(new_value,true);
@@ -76,7 +76,7 @@ namespace DisplaySettingCCDSave.Classes
             }
             sm.Load();
             var saved_setting = sm.Settings;
-            saved_setting.Add(new Tuple<string, List<Display>>(name, GetCureentSettings()));
+            saved_setting.Add(new Tuple<string, List<Tuple<Display, DisplaySetting>>>(name, GetCureentSettings()));
             sm.Settings = saved_setting;
             if (sm.Save())
             {
