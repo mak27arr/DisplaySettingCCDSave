@@ -14,18 +14,11 @@ namespace DisplaySettingCCDSave.Classes
     {
         public static string ObjectToString(object obj)
         {
-
             using (MemoryStream ms = new MemoryStream())
             {
                 new BinaryFormatter().Serialize(ms, obj);
                 return Convert.ToBase64String(ms.ToArray());
             }
-            //XmlSerializer formatter = new XmlSerializer(obj.GetType());
-            //using (MemoryStream ms = new MemoryStream())
-            //{
-            //    formatter.Serialize(ms, obj);
-            //    return Convert.ToString(ms.ToArray());
-            //}
         }
 
         public static object StringToObject(string obj_str, Type obj_type)
@@ -37,11 +30,6 @@ namespace DisplaySettingCCDSave.Classes
                 ms.Position = 0;
                 return new BinaryFormatter().Deserialize(ms);
             }
-            //XmlSerializer formatter = new XmlSerializer(obj_type);
-            //using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(obj_str ?? "")))
-            //{  
-            //    return formatter.Deserialize(ms);
-            //}
         }
     }
 }

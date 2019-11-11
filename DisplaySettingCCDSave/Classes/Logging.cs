@@ -34,7 +34,6 @@ namespace DisplaySettingCCDSave.Classes
                 }
             }
         }
-
         private static string formatMg(string msg, object obj)
         {
             string msg_ret = Environment.NewLine +
@@ -65,7 +64,6 @@ namespace DisplaySettingCCDSave.Classes
                 return "c:\\temp\\" + setting_file_name;
             }
         }
-
         private static void cheakLogFileSize()
         {
             try
@@ -85,7 +83,6 @@ namespace DisplaySettingCCDSave.Classes
                         }
                     }
                 }
-
             }
             catch (Exception ex) 
             {
